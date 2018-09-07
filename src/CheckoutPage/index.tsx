@@ -5,7 +5,7 @@ import {Fragment, PureComponent, SFC} from "react";
 import {Button} from "../Button";
 import {CartIcon} from "../CartIcon";
 import {CouponSelector} from "../CouponSelector";
-import {FetchApi} from "../FetchApi";
+import {FetchApi, IFetchState} from "../FetchApi";
 import {Modal} from "../Modal";
 import {ICheckout, ICoupon, IProduct} from "../models";
 import {PriceItem} from "../PriceItem";
@@ -70,19 +70,19 @@ export class CheckoutPage extends PureComponent<ICheckoutPageProps, ICheckoutPag
         path={`/api/checkouts/${id.toString()}`}
         params={{couponId: propOr(null, "id", selectedCoupon)}}
       >
-        {({loading, result}: {
-          loading: boolean,
-          result: {
-            product: IProduct,
-            checkout: ICheckout,
-          } | null,
-        }) => {
+        {({loading, result, error}: IFetchState<{
+          product: IProduct,
+          checkout: ICheckout,
+        }>) => {
           const waiting = loading || confirming;
 
           return (
             <div className="CheckoutPage">
               <div className="CheckoutPage-body">
                 <Product {...propOr(null, "product", result)}/>
+                {error != null && <Modal>
+                  {error.message}
+                </Modal>}
                 {result != null && <Fragment>
                   <SectionLabel>
                     cupons
