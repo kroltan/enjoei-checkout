@@ -1,0 +1,61 @@
+@keyframes Modal-backdrop-appear {
+  from {
+    clip-path: circle(0% at 50% 2em);
+  }
+
+  to {
+    clip-path: circle(141% at center);
+  }
+}
+
+@keyframes Modal-appear {
+  from {
+    transform: scale(0.5) translateY(-200%);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
+.ModalContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+
+  pointer-events: none;
+}
+
+.ModalContainer, .Modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.Modal-backdrop:first-child {
+  background: rgba(30, 30, 20, 0.5);
+  animation: Modal-backdrop-appear 500ms ease-in-out;
+}
+
+.Modal {
+  display: flex;
+  flex-direction: column;
+  margin: 3em;
+  padding: 1em 3em;
+  border-radius: 0.5em;
+
+  text-align: center;
+  background: white;
+  animation: Modal-appear 250ms ease-out;
+}
+
+.Modal-backdrop, .Modal {
+  z-index: 0;
+  pointer-events: all;
+}

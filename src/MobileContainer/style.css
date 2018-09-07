@@ -1,0 +1,32 @@
+@media screen and (min-width: 376px) {
+  .MobileContainer {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 375px;
+    height: 678px;
+
+    margin: 5vh auto;
+    border-radius: 0.5rem;
+    overflow-y: auto;
+
+    box-shadow: 0 1rem 10vh #baa;
+  }
+}
+
+/*
+REFERENCE OVERLAY
+
+.MobileContainer:not(:hover)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url(./reference.png);
+  background-size: cover;
+
+  opacity: 0.25;
+}
+*/

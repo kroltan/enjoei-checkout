@@ -1,0 +1,13 @@
+.Header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+
+  border-bottom: 1px solid var(--divider);
+}
+
+.Header img {
+  height: 2.7em;
+  width: auto;
+}

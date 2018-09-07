@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+:root {
+  font-family: Montserrat, Helvetica, Arial, sans-serif;
+  font-size: 85%;
+  color: var(--text);
+
+  --divider: #FAF9F8;
+  --control-outline: #E6E3E1;
+  --primary: #F77274;
+  --primary-shade: #D26769;
+  --text: #5B5855;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  line-height: 1.5;
+}

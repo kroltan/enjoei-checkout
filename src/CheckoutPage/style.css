@@ -1,0 +1,54 @@
+@keyframes CheckoutPage-appear {
+  from {
+    transform: translateX(-2em);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.CheckoutPage {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.CheckoutPage-body {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 1;
+
+  padding: 1.5em 1.5em 0.5em 1.5em;
+}
+
+.CheckoutPage-couponPrice {
+  animation: CheckoutPage-appear 250ms ease-out;
+}
+
+.CheckoutPage-total {
+  font-weight: bold;
+}
+
+.CheckoutPage-actions {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 0.5em;
+
+  padding: 0.7em 0.7em 0.7em 1em;
+}
+
+.CheckoutPage-actions > * {
+  flex: 1;
+}
+
+.CheckoutPage-cart-confirm {
+  color: #6fcf67;
+}
+
+.CheckoutPage-cart-cancel {
+  color: #f18f3e;
+}
