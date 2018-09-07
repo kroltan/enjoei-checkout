@@ -5,13 +5,14 @@ const bodyParser = require('body-parser')
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+app.use(express.static("."))
 
 app.get('/', function (req, res) {
   res.redirect('/produto/1321/checkout/6544')
 })
 
 app.get('/produto/:productId/checkout/:checkoutId', function (req, res) {
-  res.sendFile('checkout.html', { root: __dirname })
+  res.sendFile('index.html', { root: "." })
 })
 
 const coupon = {
