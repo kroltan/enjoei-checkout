@@ -11,7 +11,8 @@ import {ICheckout, ICoupon, IProduct} from "../models";
 import {PriceItem} from "../PriceItem";
 import {Product} from "../Product";
 import {SectionLabel} from "../SectionLabel";
-import {getDiscountValue, getTotal, setStateP} from "../util";
+import {Spinner} from "../Spinner";
+import {getDiscountValue, setStateP} from "../util";
 
 import "./style.css";
 
@@ -65,67 +66,77 @@ export class CheckoutPage extends PureComponent<ICheckoutPageProps, ICheckoutPag
     const {confirming, selectedCoupon, state} = this.state;
 
     return (
-      <FetchApi path={`/api/checkouts/${id.toString()}`}>
+      <FetchApi
+        path={`/api/checkouts/${id.toString()}`}
+        params={{couponId: propOr(null, "id", selectedCoupon)}}
+      >
         {({loading, result}: {
           loading: boolean,
           result: {
             product: IProduct,
             checkout: ICheckout,
           } | null,
-        }) => (
-          <div className="CheckoutPage">
-            <div className="CheckoutPage-body">
-              <Product {...propOr(null, "product", result)}/>
-              {result != null && <Fragment>
-                <SectionLabel>
-                  cupons
-                </SectionLabel>
-                <CouponSelector
-                  items={result.checkout.availableCoupons}
-                  product={result.product}
-                  selected={this.state.selectedCoupon}
-                  onChange={this.selectCoupon}
-                />
+        }) => {
+          const waiting = loading || confirming;
 
-                <SectionLabel>
-                  resumo
-                </SectionLabel>
-                <PriceItem description="valor original" value={result.product.price}/>
-                {selectedCoupon != null && <PriceItem
-                  className="CheckoutPage-couponPrice"
-                  description="cupom"
-                  discount={true}
-                  value={getDiscountValue(result.product, selectedCoupon!)}
-                />}
-                <PriceItem description="frete" value={result.checkout.shippingPrice}/>
-                <PriceItem
-                  className="CheckoutPage-total"
-                  description="total"
-                  value={getTotal(result.checkout, result.product, selectedCoupon)}
-                />
-              </Fragment>}
+          return (
+            <div className="CheckoutPage">
+              <div className="CheckoutPage-body">
+                <Product {...propOr(null, "product", result)}/>
+                {result != null && <Fragment>
+                  <SectionLabel>
+                    cupons
+                  </SectionLabel>
+                  <CouponSelector
+                    items={result.checkout.availableCoupons}
+                    product={result.product}
+                    selected={propOr(null, "id", selectedCoupon)}
+                    onChange={this.selectCoupon}
+                  />
+
+                  <SectionLabel>
+                    resumo
+                  </SectionLabel>
+                  <PriceItem description="valor original" value={result.product.price}/>
+                  {selectedCoupon != null && <PriceItem
+                    className="CheckoutPage-couponPrice"
+                    description="cupom"
+                    discount={true}
+                    value={getDiscountValue(result.product, selectedCoupon!)}
+                  />}
+                  <PriceItem description="frete" value={result.checkout.shippingPrice}/>
+                  <PriceItem
+                    className="CheckoutPage-total"
+                    description={<Fragment>
+                      total
+                      {loading && <Spinner/>}
+                    </Fragment>}
+                    value={loading ? null : result.checkout.totalPrice}
+                  />
+                </Fragment>}
+              </div>
+              <div className="CheckoutPage-actions">
+                <Button onClick={this.cancel} disabled={waiting}>
+                  cancelar
+                </Button>
+                <Button
+                  onClick={this.confirm(propOr(null, "checkout", result))}
+                  primary={true}
+                  disabled={waiting}
+                >
+                  confirmar
+                  {confirming && <Spinner/>}
+                </Button>
+              </div>
+              {state === "canceled" && <Modal dismiss={this.dismiss}>
+                <CancellationModal/>
+              </Modal>}
+              {state === "confirmed" && <Modal dismiss={this.dismiss}>
+                <ConfirmationModal/>
+              </Modal>}
             </div>
-            <div className="CheckoutPage-actions">
-              <Button onClick={this.cancel} disabled={confirming}>
-                cancelar
-              </Button>
-              <Button
-                onClick={this.confirm(propOr(null, "checkout", result))}
-                primary={true}
-                disabled={confirming}
-              >
-                confirmar
-                {confirming && "..."}
-              </Button>
-            </div>
-            {state === "canceled" && <Modal dismiss={this.dismiss}>
-              <CancellationModal />
-            </Modal>}
-            {state === "confirmed" && <Modal dismiss={this.dismiss}>
-              <ConfirmationModal />
-            </Modal>}
-          </div>
-        )}
+          );
+        }}
       </FetchApi>
     );
   }

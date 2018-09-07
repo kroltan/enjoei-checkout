@@ -5,7 +5,7 @@ import "./style.css";
 
 
 export const Money: SFC<{
-  value?: number | void
+  value?: number | null
 }> = ({value}) => {
   if (value == null) {
     return null;

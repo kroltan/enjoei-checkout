@@ -1,4 +1,4 @@
-import {apply, bind, forEach, pipe, toPairs} from "ramda";
+import {apply, bind, equals, forEach, pipe, propEq, reject, toPairs} from "ramda";
 import {PureComponent, ReactNode} from "react";
 
 
@@ -28,7 +28,10 @@ export class FetchApi<T> extends PureComponent<IFetchProps<T>, IFetchState<T>> {
   }
 
   public componentDidUpdate(prevProps: IFetchProps<T>) {
-    if (prevProps.path !== this.props.path) {
+    if (
+      !equals(prevProps.path, this.props.path)
+      || !equals(prevProps.params, this.props.params)
+    ) {
       this.load();
     }
   }
@@ -38,17 +41,17 @@ export class FetchApi<T> extends PureComponent<IFetchProps<T>, IFetchState<T>> {
   }
 
   private load() {
-    const empty = {
+    const done = {
       error: null,
       loading: false,
       result: null,
     };
 
-    this.setState(empty, () => {
+    this.setState({loading: true}, () => {
       fetch(this.endpoint)
         .then(response => response.json())
-        .then((result: T) => this.setState({...empty, result}))
-        .catch(error => this.setState({...empty, error}));
+        .then((result: T) => this.setState({...done, result}))
+        .catch(error => this.setState({...done, error}));
     })
   }
 
@@ -63,6 +66,7 @@ export class FetchApi<T> extends PureComponent<IFetchProps<T>, IFetchState<T>> {
 
     pipe(
       toPairs,
+      reject(propEq(1, null)),
       forEach(setParam),
     )(params);
 

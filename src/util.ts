@@ -1,19 +1,10 @@
 import {Component} from "react";
 
-import {ICheckout, ICoupon, IProduct} from "./models";
+import {ICoupon, IProduct} from "./models";
 
 
 export const getDiscountValue = (product: IProduct, coupon: ICoupon) => {
   return -product.price * (coupon.discount / 100);
-};
-
-
-export const getTotal = (checkout: ICheckout, product: IProduct, coupon: ICoupon | null) => {
-  if (coupon == null) {
-    return checkout.totalPrice;
-  } else {
-    return checkout.totalPrice + getDiscountValue(product, coupon);
-  }
 };
 
 

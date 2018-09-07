@@ -9,10 +9,10 @@ import "./style.css";
 export const PriceItem: SFC<{
   className?: string,
   description?: ReactNode,
-  value?: number,
+  value?: number | null,
   discount?: boolean,
 }> = ({className, description, discount, value}) => {
-  if (description == null || value == null) {
+  if (description == null) {
     return null;
   }
 

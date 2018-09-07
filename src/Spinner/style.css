@@ -1,0 +1,23 @@
+@keyframes Spinner-spin {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.Spinner {
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  margin: 0 0.25em;
+
+  border: 3px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+
+  animation: Spinner-spin 1s linear infinite;
+}

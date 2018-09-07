@@ -45,6 +45,10 @@
   opacity: 1;
 }
 
+.Button:disabled {
+  opacity: 0.8;
+}
+
 .Button.primary {
   border-color: var(--primary-shade);
 

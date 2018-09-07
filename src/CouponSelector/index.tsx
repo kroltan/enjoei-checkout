@@ -12,7 +12,7 @@ import "./style.css";
 export interface ICouponSelectorProps {
   items: ICoupon[];
   product: IProduct;
-  selected: ICoupon | null;
+  selected: number | null;
   onChange(selected: ICoupon | null): void;
 }
 
@@ -47,13 +47,15 @@ export class CouponSelector extends PureComponent<ICouponSelectorProps> {
   private renderItem(value: ICoupon | null, content: ReactNode | null): ReactNode {
     const {selected, onChange} = this.props;
 
+    const id: number | null = propOr(null, "id", value);
+
     return (
-      <label className="CouponSelector-row" key={propOr(null, "id", value)}>
+      <label className="CouponSelector-row" key={id || undefined}>
         <input
           className="CouponSelector-radio"
           type="radio"
           name={this.name}
-          checked={selected === value}
+          checked={selected === id}
           onChange={onChange.bind(null, value)}
         />
         {content}
